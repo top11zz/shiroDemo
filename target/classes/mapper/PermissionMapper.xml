@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbit.demo.dao.PermissionDao">
+  <resultMap id="BaseResultMap" type="com.jbit.demo.entity.Permission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, permission_name, remarks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getPermissionsByUserName" resultMap="BaseResultMap">
+   SELECT
+	*
+    FROM
+        t_permission
+    LEFT JOIN t_role_permission ON t_permission.id = t_role_permission.permission_id
+    LEFT JOIN t_user_role ON t_role_permission.role_id = t_user_role.role_id
+    LEFT JOIN t_user ON t_user_role.user_id = t_user.id
+    WHERE
+        t_user.user_name = #{userName}
+
+  </select>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbit.demo.dao.RoleDao">
+  <resultMap id="BaseResultMap" type="com.jbit.demo.entity.Role">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, remarks, role_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getRolesByUserName" resultMap="BaseResultMap">
+    select * from t_role r left join t_user_role ur on r.id = ur.role_id left join t_user u on ur.user_id = u.id where u.user_name = #{userName};
+  </select>
+</mapper>
